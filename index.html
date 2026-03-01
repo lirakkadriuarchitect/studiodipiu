@@ -145,7 +145,6 @@
       font-family: 'Didact Gothic', sans-serif;
       font-size: clamp(0.55rem, 0.92vw, 0.65rem);
       letter-spacing: 0.1em;
-      text-transform: uppercase;
       color: var(--dim);
       opacity: 0;
       transform: translateY(8px);
@@ -173,19 +172,19 @@
       display: inline-block;
       transform-origin: center bottom;
       opacity: 0;
-      animation:
-        accentFadeIn 0.35s ease-out 2.15s forwards,
-        accentShake  6s   ease-in-out 4s infinite;
+      animation: accentFadeIn 0.35s ease-out 2.15s forwards;
+    }
+    .wm-accent-mark.shake {
+      animation: accentShake 0.6s ease-in-out;
     }
     @keyframes accentFadeIn { to { opacity: 1; } }
     @keyframes accentShake {
-      0%,  18%, 100% { transform: translateX(0)    rotate(0deg);   }
-      3%             { transform: translateX(-3px)  rotate(-10deg); }
-      6%             { transform: translateX( 3px)  rotate( 10deg); }
-      9%             { transform: translateX(-2px)  rotate( -7deg); }
-      12%            { transform: translateX( 2px)  rotate(  7deg); }
-      15%            { transform: translateX(-1px)  rotate( -3deg); }
-      17%            { transform: translateX(0)     rotate(  0deg); }
+      0%, 100% { transform: translateX(0)    rotate(0deg);   }
+      15%      { transform: translateX(-3px)  rotate(-10deg); }
+      30%      { transform: translateX( 3px)  rotate( 10deg); }
+      50%      { transform: translateX(-2px)  rotate( -7deg); }
+      70%      { transform: translateX( 2px)  rotate(  7deg); }
+      85%      { transform: translateX(-1px)  rotate( -3deg); }
     }
 
     /* ── MOBILE ── */
@@ -209,10 +208,10 @@
     <p class="tagline">An integrated architecture and art studio.</p>
 
     <div class="disciplines">
-      <p class="discipline-label">Practice</p>
       <div class="discipline-track" aria-live="polite">
         <span>architecture</span>
         <span>interior design</span>
+        <span>product design</span>
         <span>art</span>
       </div>
     </div>
@@ -226,10 +225,22 @@
 
 
 <script>
-  /* ── Discipline rotator — starts after disciplines have faded in ── */
+  /* ── Discipline rotator + accent shake (synchronized) ── */
   (function () {
-    const items = document.querySelectorAll('.discipline-track span');
-    let current = 0;
+    const items  = document.querySelectorAll('.discipline-track span');
+    const accent = document.querySelector('.wm-accent-mark');
+    let current  = 0;
+
+    /* Lock opacity after fade-in so the shake class can override animation safely */
+    setTimeout(() => { if (accent) accent.style.opacity = '1'; }, 2600);
+
+    function shake() {
+      if (!accent) return;
+      accent.classList.remove('shake');
+      void accent.offsetWidth; /* force reflow to restart */
+      accent.classList.add('shake');
+    }
+
     function activate(i) {
       items.forEach((el, j) => {
         el.classList.remove('active', 'exit');
@@ -237,11 +248,13 @@
         else if (j === (i - 1 + items.length) % items.length) el.classList.add('exit');
       });
     }
+
     setTimeout(() => {
       activate(0);
       setInterval(() => {
         current = (current + 1) % items.length;
         activate(current);
+        shake();
       }, 2800);
     }, 3800);
   })();
