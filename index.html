@@ -131,8 +131,11 @@
       transform: translateY(10px);
       transition: opacity 0.65s ease, transform 0.65s ease;
     }
-    .discipline-track span.active { opacity: 1; transform: translateY(0); }
+    .discipline-track span { pointer-events: none; }
+    .discipline-track span.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
     .discipline-track span.exit   { opacity: 0; transform: translateY(-10px); }
+    .discipline-track a { color: inherit; text-decoration: none; }
+    .discipline-track a:hover { opacity: 0.5; transition: opacity 0.2s; }
 
     /* ── FOOTER ── */
     footer {
@@ -210,7 +213,7 @@
     <div class="disciplines">
       <div class="discipline-track" aria-live="polite">
         <span>architecture</span>
-        <span>interior design</span>
+        <span><a href="interior-design.html">interior design</a></span>
         <span>product design</span>
         <span>art</span>
       </div>
@@ -219,7 +222,11 @@
 
   <footer>
     <span>www.studiodipiu.com</span>
-    <a href="mailto:info@studiodipiu.com">info@studiodipiu.com</a>
+    <span style="display:flex;gap:1.5rem;">
+      <a href="LirakKadriu_CV.pdf" target="_blank">CV</a>
+      <a href="LirakKadriu_Portfolio.pdf" target="_blank">Portfolio</a>
+      <a href="mailto:info@studiodipiu.com">info@studiodipiu.com</a>
+    </span>
   </footer>
 </div>
 

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interior Design — diPiù studio" />
+  <meta name="theme-color" content="#f5f3ef" />
+  <title>Interior Design — diPiù</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200&family=Didact+Gothic&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f5f3ef;
+      --ink: #181614;
+      --dim: rgba(24,22,20,0.36);
+      --line: rgba(24,22,20,0.13);
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    #c-dot, #c-ring {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #c-dot { width: 5px; height: 5px; background: var(--ink); }
+    #c-ring {
+      width: 30px; height: 30px;
+      border: 1px solid rgba(24,22,20,0.38);
+      transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 7vw, 7rem);
+      gap: clamp(3rem, 6vw, 5rem);
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      opacity: 0;
+      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+    }
+
+    .back {
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: clamp(0.55rem, 0.9vw, 0.65rem);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      transition: color 0.2s;
+    }
+    .back:hover { color: var(--ink); }
+    .back-arrow { font-size: 0.9em; }
+
+    .wordmark {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    /* ── PROJECT INTRO ── */
+    .intro {
+      opacity: 0;
+      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+    }
+
+    .project-label {
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: clamp(0.52rem, 0.82vw, 0.6rem);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 0.8rem;
+    }
+
+    .project-title {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    /* ── IMAGE GRID ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(0.8rem, 2vw, 1.5rem);
+      opacity: 0;
+      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.55s forwards;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      aspect-ratio: 4/3;
+      filter: grayscale(8%);
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+
+    .gallery img:hover {
+      filter: grayscale(0%);
+      transform: scale(1.01);
+    }
+
+    /* first image spans full width */
+    .gallery img:first-child {
+      grid-column: 1 / -1;
+      aspect-ratio: 16/9;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      padding-top: 1.8rem;
+      border-top: 1px solid var(--line);
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: clamp(0.55rem, 0.92vw, 0.65rem);
+      letter-spacing: 0.1em;
+      color: var(--dim);
+      opacity: 0;
+      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.8s forwards;
+    }
+    footer a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--ink); }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* ── MOBILE ── */
+    @media (max-width: 680px) {
+      html, body { cursor: auto; }
+      #c-dot, #c-ring { display: none; }
+      .gallery { grid-template-columns: 1fr; }
+      .gallery img:first-child { aspect-ratio: 4/3; }
+      footer { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="c-ring"></div>
+<div id="c-dot"></div>
+
+<div class="page">
+
+  <header>
+    <a class="back" href="index.html"><span class="back-arrow">←</span> back</a>
+    <a class="wordmark" href="index.html">diPiù</a>
+  </header>
+
+  <main>
+    <div class="intro">
+      <p class="project-label">Interior Design</p>
+      <h1 class="project-title">Tintin<br>Cocktail Bar</h1>
+    </div>
+
+    <div class="gallery" style="margin-top: clamp(2.5rem, 5vw, 4rem);">
+      <img src="interior design/tintin 1.png" alt="Tintin Cocktail Bar" loading="lazy" />
+      <img src="interior design/tintin2.png"  alt="Tintin Cocktail Bar" loading="lazy" />
+      <img src="interior design/tintin 3.png" alt="Tintin Cocktail Bar" loading="lazy" />
+      <img src="interior design/tintin 4.png" alt="Tintin Cocktail Bar" loading="lazy" />
+    </div>
+  </main>
+
+  <footer>
+    <span>www.studiodipiu.com</span>
+    <a href="mailto:info@studiodipiu.com">info@studiodipiu.com</a>
+  </footer>
+
+</div>
+
+<script>
+  /* ── Custom cursor ── */
+  (function () {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    const dot  = document.getElementById('c-dot');
+    const ring = document.getElementById('c-ring');
+    let mx = -200, my = -200, rx = -200, ry = -200;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+    });
+
+    (function loop() {
+      rx += (mx - rx) * 0.1;
+      ry += (my - ry) * 0.1;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(loop);
+    })();
+
+    document.querySelectorAll('a').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width  = '46px';
+        ring.style.height = '46px';
+        ring.style.borderColor = 'rgba(24,22,20,0.6)';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width  = '30px';
+        ring.style.height = '30px';
+        ring.style.borderColor = 'rgba(24,22,20,0.38)';
+      });
+    });
+  })();
+</script>
+</body>
+</html>
