@@ -8,14 +8,14 @@
   <title>Interior Design — diPiù</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200&family=Didact+Gothic&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Jost:wght@100;200&family=Didact+Gothic&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #f5f3ef;
-      --ink: #181614;
-      --dim: rgba(24,22,20,0.36);
+      --bg:   #f5f3ef;
+      --ink:  #181614;
+      --dim:  rgba(24,22,20,0.36);
       --line: rgba(24,22,20,0.13);
     }
 
@@ -36,20 +36,34 @@
       border-radius: 50%;
       transform: translate(-50%, -50%);
     }
-    #c-dot { width: 5px; height: 5px; background: var(--ink); }
+    #c-dot  { width: 5px; height: 5px; background: var(--ink); }
     #c-ring {
       width: 30px; height: 30px;
       border: 1px solid rgba(24,22,20,0.38);
-      transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+      transition: width .25s ease, height .25s ease, border-color .25s ease;
     }
 
-    /* ── LAYOUT ── */
+    #c-hint {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: .52rem;
+      letter-spacing: .14em;
+      color: var(--ink);
+      opacity: 0;
+      transform: translate(14px, -50%);
+      transition: opacity .18s;
+      white-space: nowrap;
+    }
+    #c-hint.show { opacity: 1; }
+
+    /* ── PAGE ── */
     .page {
-      min-height: 100vh;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      padding: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 7vw, 7rem);
-      gap: clamp(3rem, 6vw, 5rem);
+      padding: clamp(2.5rem,6vw,5rem) clamp(2rem,7vw,7rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(3rem,6vw,5rem);
     }
 
     /* ── HEADER ── */
@@ -58,86 +72,216 @@
       align-items: baseline;
       justify-content: space-between;
       opacity: 0;
-      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+      animation: fadeUp .65s cubic-bezier(.22,1,.36,1) .1s forwards;
     }
-
     .back {
       font-family: 'Didact Gothic', sans-serif;
-      font-size: clamp(0.55rem, 0.9vw, 0.65rem);
-      letter-spacing: 0.14em;
+      font-size: clamp(.55rem,.9vw,.65rem);
+      letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--dim);
       text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 0.5em;
-      transition: color 0.2s;
+      gap: .5em;
+      transition: color .2s;
     }
     .back:hover { color: var(--ink); }
-    .back-arrow { font-size: 0.9em; }
-
+    .back-arrow { font-size: .9em; }
     .wordmark {
       font-family: 'Jost', sans-serif;
       font-weight: 200;
-      font-size: clamp(1.1rem, 2.2vw, 1.8rem);
-      letter-spacing: -0.02em;
+      font-size: clamp(1.1rem,2.2vw,1.8rem);
+      letter-spacing: -.02em;
       color: var(--ink);
       text-decoration: none;
     }
 
-    /* ── PROJECT INTRO ── */
-    .intro {
-      opacity: 0;
-      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
-    }
-
-    .project-label {
+    /* ── DISCIPLINE INTRO ── */
+    .discipline-label {
       font-family: 'Didact Gothic', sans-serif;
-      font-size: clamp(0.52rem, 0.82vw, 0.6rem);
-      letter-spacing: 0.22em;
+      font-size: clamp(.52rem,.82vw,.6rem);
+      letter-spacing: .22em;
       text-transform: uppercase;
       color: var(--dim);
-      margin-bottom: 0.8rem;
+      margin-bottom: .8rem;
+      opacity: 0;
+      animation: fadeUp .6s cubic-bezier(.22,1,.36,1) .25s forwards;
     }
-
-    .project-title {
+    .discipline-title {
       font-family: 'Jost', sans-serif;
       font-weight: 200;
-      font-size: clamp(2rem, 5vw, 4.5rem);
-      letter-spacing: -0.02em;
+      font-size: clamp(2rem,5vw,4.5rem);
+      letter-spacing: -.02em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .discipline-title .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp .7s cubic-bezier(.22,1,.36,1) calc(.35s + var(--i) * .17s) forwards;
+    }
+
+    /* ── PROJECTS ── */
+    .projects {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(5rem,10vw,9rem);
+      margin-top: clamp(4rem,8vw,7rem);
+    }
+
+    /* project wrappers — column: row on top, description below */
+    .project-load {
+      opacity: 0;
+      animation: fadeUp .7s cubic-bezier(.22,1,.36,1) .65s forwards;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2rem,3.5vw,3rem);
+    }
+    .project-scroll {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .95s cubic-bezier(.22,1,.36,1),
+                  transform .95s cubic-bezier(.22,1,.36,1);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2rem,3.5vw,3rem);
+    }
+    .project-scroll.visible { opacity: 1; transform: translateY(0); }
+
+    /* inner row: title + slider side by side */
+    .project-row {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: clamp(2rem,4vw,5rem);
+    }
+
+    .project-meta {
+      flex: 0 0 auto;
+      padding-top: .3rem;
+    }
+    .project-type {
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: clamp(.52rem,.82vw,.6rem);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: .45rem;
+    }
+    .project-title {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-size: clamp(1.6rem,3.8vw,3.2rem);
+      letter-spacing: -.02em;
       line-height: 1;
       color: var(--ink);
     }
 
-    /* ── IMAGE GRID ── */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: clamp(0.8rem, 2vw, 1.5rem);
-      opacity: 0;
-      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.55s forwards;
+    /* ── DESCRIPTION ── */
+    .project-desc {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: clamp(2rem,5vw,6rem);
+      padding-top: 1.6rem;
+      border-top: 1px solid var(--line);
+    }
+    .desc-meta {
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: clamp(.52rem,.82vw,.6rem);
+      letter-spacing: .22em;
+      text-transform: lowercase;
+      color: var(--dim);
+      line-height: 2.2;
+      flex-shrink: 0;
+    }
+    .desc-dot {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--dim);
+      margin-right: .55em;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .desc-note {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(1rem,1.4vw,1.15rem);
+      color: rgba(24,22,20,0.48);
+      line-height: 1.9;
+      max-width: 520px;
+      text-align: right;
     }
 
-    .gallery img {
+    /* ── SLIDER ── */
+    .slider { position: relative; width: 66.667%; flex-shrink: 0; margin: 0 auto; }
+
+    .slider-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: var(--line);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .9s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    .slide.is-active { opacity: 1; z-index: 1; }
+
+    .slide img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      aspect-ratio: 4/3;
       filter: grayscale(8%);
-      transition: filter 0.4s ease, transform 0.4s ease;
+      transform: scale(1);
+    }
+    .slide.is-active img { animation: kenBurns 8s ease-out forwards; }
+    @keyframes kenBurns {
+      from { transform: scale(1.00); }
+      to   { transform: scale(1.06); }
     }
 
-    .gallery img:hover {
-      filter: grayscale(0%);
-      transform: scale(1.01);
-    }
+    .slider-bar { height: 1px; background: var(--line); overflow: hidden; }
+    .slider-bar-fill { height: 100%; width: 0%; background: rgba(24,22,20,.38); }
 
-    /* first image spans full width */
-    .gallery img:first-child {
-      grid-column: 1 / -1;
-      aspect-ratio: 16/9;
+    .slider-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
     }
+    .slider-nav { display: flex; gap: 1.8rem; }
+    .s-btn {
+      background: none;
+      border: none;
+      cursor: none;
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: clamp(.52rem,.82vw,.6rem);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--dim);
+      padding: 0;
+      transition: color .2s;
+    }
+    .s-btn:hover { color: var(--ink); }
+    .slider-count {
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: clamp(.52rem,.82vw,.6rem);
+      letter-spacing: .18em;
+      color: var(--dim);
+    }
+    .slider-count .cur { color: var(--ink); display: inline-block; transition: opacity .25s; }
 
     /* ── FOOTER ── */
     footer {
@@ -148,13 +292,13 @@
       padding-top: 1.8rem;
       border-top: 1px solid var(--line);
       font-family: 'Didact Gothic', sans-serif;
-      font-size: clamp(0.55rem, 0.92vw, 0.65rem);
-      letter-spacing: 0.1em;
+      font-size: clamp(.55rem,.92vw,.65rem);
+      letter-spacing: .1em;
       color: var(--dim);
       opacity: 0;
-      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.8s forwards;
+      animation: fadeUp .7s cubic-bezier(.22,1,.36,1) .9s forwards;
     }
-    footer a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    footer a { color: inherit; text-decoration: none; transition: color .2s; }
     footer a:hover { color: var(--ink); }
 
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
@@ -162,10 +306,13 @@
     /* ── MOBILE ── */
     @media (max-width: 680px) {
       html, body { cursor: auto; }
-      #c-dot, #c-ring { display: none; }
-      .gallery { grid-template-columns: 1fr; }
-      .gallery img:first-child { aspect-ratio: 4/3; }
-      footer { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+      #c-dot, #c-ring, #c-hint { display: none; }
+      .project-row { flex-direction: column; }
+      .slider { width: 100%; margin: 0; }
+      .slider-viewport { aspect-ratio: 4/3; }
+      .project-desc { flex-direction: column; gap: 1.5rem; }
+      .desc-note { text-align: left; max-width: 100%; }
+      footer { flex-direction: column; align-items: flex-start; gap: .3rem; }
     }
   </style>
 </head>
@@ -173,6 +320,7 @@
 
 <div id="c-ring"></div>
 <div id="c-dot"></div>
+<div id="c-hint"></div>
 
 <div class="page">
 
@@ -182,16 +330,126 @@
   </header>
 
   <main>
-    <div class="intro">
-      <p class="project-label">Interior Design</p>
-      <h1 class="project-title">Tintin<br>Cocktail Bar</h1>
+
+    <div>
+      <p class="discipline-label">Selected work</p>
+      <h1 class="discipline-title">
+        <span class="word" style="--i:0">Interior</span><br>
+        <span class="word" style="--i:1">Design</span>
+      </h1>
     </div>
 
-    <div class="gallery" style="margin-top: clamp(2.5rem, 5vw, 4rem);">
-      <img src="interior design/tintin 1.png" alt="Tintin Cocktail Bar" loading="lazy" />
-      <img src="interior design/tintin2.png"  alt="Tintin Cocktail Bar" loading="lazy" />
-      <img src="interior design/tintin 3.png" alt="Tintin Cocktail Bar" loading="lazy" />
-      <img src="interior design/tintin 4.png" alt="Tintin Cocktail Bar" loading="lazy" />
+    <div class="projects">
+
+      <!-- ── Tintin Cocktail Bar ── -->
+      <div class="project-load">
+
+        <div class="project-row">
+          <div class="project-meta">
+            <p class="project-type">Bar &amp; Restaurant</p>
+            <h2 class="project-title">Tintin<br>Cocktail Bar</h2>
+          </div>
+          <div class="slider">
+            <div class="slider-viewport">
+              <div class="slide is-active"><img src="interior%20design/tintin%20cocktail%20bar/edited/17_FORTESA%20HOME_tintin.jpg" alt="Tintin Cocktail Bar — render" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/1_FORTESA%20HOME_tintin.jpg"  alt="Tintin Cocktail Bar — render" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/5_FORTESA%20HOME_tintin.jpg"  alt="Tintin Cocktail Bar — render" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/9_FORTESA%20HOME_tintin.jpg"  alt="Tintin Cocktail Bar — render" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9561.jpg"                 alt="Tintin Cocktail Bar" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9572.jpg"                 alt="Tintin Cocktail Bar" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9614.jpg"                 alt="Tintin Cocktail Bar" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9631.jpg"                 alt="Tintin Cocktail Bar" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9691.jpg"                 alt="Tintin Cocktail Bar" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9697.jpg"                 alt="Tintin Cocktail Bar" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/IMG_0975.jpg"                 alt="Tintin Cocktail Bar" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/IMG_1024.jpg"                 alt="Tintin Cocktail Bar" /></div>
+            </div>
+            <div class="slider-bar"><div class="slider-bar-fill"></div></div>
+            <div class="slider-controls">
+              <div class="slider-nav">
+                <button class="s-btn s-prev" aria-label="Previous">← prev</button>
+                <button class="s-btn s-next" aria-label="Next">next →</button>
+              </div>
+              <span class="slider-count"><span class="cur">01</span>&thinsp;/&thinsp;<span class="tot">12</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-desc">
+          <div class="desc-meta">
+            <span class="desc-dot"></span>bar &amp; restaurant<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kosovo<br>
+            <br>
+            plaster · brass<br>
+            aged timber<br>
+            local stone · leather<br>
+            <br>
+            97 m²
+          </div>
+          <div class="desc-note">
+            The bar was designed from the surface in. Texture precedes form —
+            raw plaster absorbs candlelight rather than deflecting it.
+            Every angle was resolved to resist hierarchy: no seat is more
+            privileged than another, no corner reduced to mere circulation.
+            The space earns its stillness.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Late Night Bar ── -->
+      <div class="project-scroll">
+
+        <div class="project-row">
+          <div class="project-meta">
+            <p class="project-type">Bar &amp; Lounge</p>
+            <h2 class="project-title">Late Night<br>Bar</h2>
+          </div>
+          <div class="slider">
+            <div class="slider-viewport">
+              <div class="slide is-active"><img src="interior%20design/late%20night%20bar/edited/image.png"                 alt="Late Night Bar" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/9Me0fysftHI_L4iRXN3_b.png"  alt="Late Night Bar" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/Iaobqt1WYhTRcnRf12xjk.png"  alt="Late Night Bar" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/WU17YBtCLCw-FAz5H7jFG.png"  alt="Late Night Bar" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/aai5R30NczPH-5Q1aBEO4.png"  alt="Late Night Bar" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/iLHk2mLaWinhTznl29kUw.png"  alt="Late Night Bar" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/oL1UJ4oz95Jat50aUErzI.png"  alt="Late Night Bar" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/vUa0RHimI0U-Ls4qZ-5lA.png"  alt="Late Night Bar" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/image%20%281%29.png"          alt="Late Night Bar" /></div>
+            </div>
+            <div class="slider-bar"><div class="slider-bar-fill"></div></div>
+            <div class="slider-controls">
+              <div class="slider-nav">
+                <button class="s-btn s-prev" aria-label="Previous">← prev</button>
+                <button class="s-btn s-next" aria-label="Next">next →</button>
+              </div>
+              <span class="slider-count"><span class="cur">01</span>&thinsp;/&thinsp;<span class="tot">09</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-desc">
+          <div class="desc-meta">
+            <span class="desc-dot"></span>bar &amp; lounge<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kosovo<br>
+            <br>
+            concrete · steel<br>
+            smoked glass<br>
+            oxidised metal · linen<br>
+            <br>
+            concept
+          </div>
+          <div class="desc-note">
+            A room that exists only after dark. Geometry was resolved before
+            any palette was considered — structure first, atmosphere as
+            consequence. Dark materials were chosen not for drama but for
+            their capacity to absorb presence, letting people and light
+            become the only points of definition.
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </main>
 
@@ -203,40 +461,160 @@
 </div>
 
 <script>
-  /* ── Custom cursor ── */
-  (function () {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-    const dot  = document.getElementById('c-dot');
-    const ring = document.getElementById('c-ring');
-    let mx = -200, my = -200, rx = -200, ry = -200;
+/* ── Slider factory ── */
+function makeSlider(sliderEl) {
+  const viewport = sliderEl.querySelector('.slider-viewport');
+  const slides   = Array.from(sliderEl.querySelectorAll('.slide'));
+  const fill     = sliderEl.querySelector('.slider-bar-fill');
+  const curEl    = sliderEl.querySelector('.cur');
+  const btnPrev  = sliderEl.querySelector('.s-prev');
+  const btnNext  = sliderEl.querySelector('.s-next');
+  const total    = slides.length;
 
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.left = mx + 'px';
-      dot.style.top  = my + 'px';
-    });
+  let idx    = 0;
+  let paused = false;
+  let ticker = null;
 
-    (function loop() {
-      rx += (mx - rx) * 0.1;
-      ry += (my - ry) * 0.1;
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
-      requestAnimationFrame(loop);
-    })();
+  function pad(n) { return String(n + 1).padStart(2, '0'); }
 
-    document.querySelectorAll('a').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        ring.style.width  = '46px';
-        ring.style.height = '46px';
-        ring.style.borderColor = 'rgba(24,22,20,0.6)';
-      });
-      el.addEventListener('mouseleave', () => {
-        ring.style.width  = '30px';
-        ring.style.height = '30px';
-        ring.style.borderColor = 'rgba(24,22,20,0.38)';
-      });
-    });
+  function goTo(n) {
+    slides[idx].classList.remove('is-active');
+    idx = (n + total) % total;
+    const img = slides[idx].querySelector('img');
+    img.style.animation = 'none';
+    void img.offsetWidth;
+    img.style.animation = '';
+    slides[idx].classList.add('is-active');
+    curEl.style.opacity = '0';
+    setTimeout(() => { curEl.textContent = pad(idx); curEl.style.opacity = '1'; }, 160);
+    startBar();
+  }
+
+  function next() { goTo(idx + 1); }
+  function prev() { goTo(idx - 1); }
+
+  function startBar() {
+    fill.style.transition = 'none';
+    fill.style.width = '0%';
+    void fill.offsetWidth;
+    if (!paused) {
+      fill.style.transition = 'width 5s linear';
+      fill.style.width = '100%';
+    }
+  }
+
+  function startTicker() {
+    clearInterval(ticker);
+    ticker = setInterval(() => { if (!paused) next(); }, 5000);
+  }
+
+  btnNext.addEventListener('click', () => { next(); startTicker(); });
+  btnPrev.addEventListener('click', () => { prev(); startTicker(); });
+
+  viewport.addEventListener('click', e => {
+    const half = viewport.getBoundingClientRect().width / 2;
+    e.offsetX < half ? prev() : next();
+    startTicker();
+  });
+
+  viewport.addEventListener('mouseenter', () => {
+    paused = true;
+    fill.style.transition = 'none';
+    fill.style.width = getComputedStyle(fill).width;
+  });
+  viewport.addEventListener('mouseleave', () => {
+    paused = false;
+    startBar();
+  });
+
+  let tx0 = 0;
+  viewport.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
+  viewport.addEventListener('touchend',   e => {
+    const d = e.changedTouches[0].clientX - tx0;
+    if (Math.abs(d) > 40) { d < 0 ? next() : prev(); startTicker(); }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    const r   = viewport.getBoundingClientRect();
+    const vis = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+    if (vis / r.height < 0.5) return;
+    e.key === 'ArrowLeft' ? prev() : next();
+    startTicker();
+  });
+
+  startBar();
+  startTicker();
+}
+
+document.querySelectorAll('.slider').forEach(makeSlider);
+
+/* ── Scroll reveal ── */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.project-scroll').forEach(el => revealObserver.observe(el));
+
+/* ── Custom cursor ── */
+(function () {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  const dot  = document.getElementById('c-dot');
+  const ring = document.getElementById('c-ring');
+  const hint = document.getElementById('c-hint');
+  let mx = -200, my = -200, rx = -200, ry = -200;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left  = mx + 'px';
+    dot.style.top   = my + 'px';
+    hint.style.left = mx + 'px';
+    hint.style.top  = my + 'px';
+  });
+
+  (function loop() {
+    rx += (mx - rx) * 0.1;
+    ry += (my - ry) * 0.1;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(loop);
   })();
+
+  document.querySelectorAll('.slider-viewport').forEach(vp => {
+    vp.addEventListener('mousemove', e => {
+      hint.textContent = e.offsetX < vp.getBoundingClientRect().width / 2 ? '←' : '→';
+      hint.classList.add('show');
+      ring.style.width       = '44px';
+      ring.style.height      = '44px';
+      ring.style.borderColor = 'rgba(24,22,20,0.5)';
+    });
+    vp.addEventListener('mouseleave', () => {
+      hint.classList.remove('show');
+      ring.style.width       = '30px';
+      ring.style.height      = '30px';
+      ring.style.borderColor = 'rgba(24,22,20,0.38)';
+    });
+  });
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width       = '46px';
+      ring.style.height      = '46px';
+      ring.style.borderColor = 'rgba(24,22,20,0.6)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width       = '30px';
+      ring.style.height      = '30px';
+      ring.style.borderColor = 'rgba(24,22,20,0.38)';
+    });
+  });
+})();
 </script>
 </body>
 </html>
