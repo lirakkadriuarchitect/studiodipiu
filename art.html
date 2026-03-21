@@ -353,9 +353,14 @@
 
   /* ── Touch ── */
   let touchY0 = 0;
-  window.addEventListener('touchstart', (e) => { touchY0 = e.touches[0].clientY; }, { passive: true });
-  window.addEventListener('touchend',   (e) => {
-    if (!active) return;
+  let touchActive = false;
+  window.addEventListener('touchstart', (e) => {
+    touchY0 = e.touches[0].clientY;
+    touchActive = true;
+  }, { passive: true });
+  window.addEventListener('touchend', (e) => {
+    if (!touchActive) return;
+    touchActive = false;
     const dy = touchY0 - e.changedTouches[0].clientY;
     if (Math.abs(dy) > 40) step(dy > 0 ? 1 : -1);
   }, { passive: true });
