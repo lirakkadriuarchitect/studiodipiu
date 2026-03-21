@@ -1,0 +1,92 @@
+/* ── RESET ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── VARIABLES ── */
+:root {
+  --bg:   #f5f3ef;
+  --ink:  #181614;
+  --dim:  rgba(24,22,20,0.55);
+  --line: rgba(24,22,20,0.13);
+}
+
+/* ── BASE ── */
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+#c-dot, #c-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+#c-dot  { width: 5px; height: 5px; background: var(--ink); }
+#c-ring {
+  width: 30px; height: 30px;
+  border: 1px solid rgba(24,22,20,0.38);
+  transition: width .25s ease, height .25s ease, border-color .25s ease;
+}
+#c-hint {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-family: 'Didact Gothic', sans-serif;
+  font-size: .52rem;
+  letter-spacing: .14em;
+  color: var(--ink);
+  opacity: 0;
+  transform: translate(14px, -50%);
+  transition: opacity .18s;
+  white-space: nowrap;
+}
+#c-hint.show { opacity: 1; }
+
+/* ── FOOTER ── */
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  padding-top: 1.8rem;
+  border-top: 1px solid var(--line);
+  font-family: 'Didact Gothic', sans-serif;
+  font-size: clamp(.55rem,.92vw,.65rem);
+  letter-spacing: .1em;
+  color: var(--dim);
+}
+footer a { color: inherit; text-decoration: none; transition: color .2s; }
+footer a:hover { color: var(--ink); }
+
+.footer-social {
+  display: flex;
+  gap: 1.2em;
+  align-items: center;
+}
+
+/* ── ANIMATION ── */
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+/* ── ACCESSIBILITY ── */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── SLIDER IMAGE HOVER (grayscale off) ── */
+.slide img { transition: filter 0.4s ease; }
+.slider-viewport:hover .slide.is-active img { filter: grayscale(0%); }
+
+/* ── MOBILE ── */
+@media (max-width: 680px) {
+  html, body { cursor: auto; }
+  #c-dot, #c-ring, #c-hint { display: none; }
+  footer { flex-direction: column; align-items: flex-start; gap: .3rem; }
+}

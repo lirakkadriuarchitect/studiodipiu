@@ -5,44 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="diPiù — An integrated architecture and art studio." />
   <meta name="theme-color" content="#f5f3ef" />
-  <title>diPiù</title>
+  <title>diPiù — Architecture &amp; Art Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200&family=Didact+Gothic&display=swap" rel="stylesheet" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://www.studiodipiu.com/" />
+  <meta property="og:title"       content="diPiù — Architecture &amp; Art Studio" />
+  <meta property="og:description" content="An integrated architecture and art studio." />
+  <meta property="og:image"       content="https://www.studiodipiu.com/og-image.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="diPiù — Architecture &amp; Art Studio" />
+  <meta name="twitter:description" content="An integrated architecture and art studio." />
+  <meta name="twitter:image"       content="https://www.studiodipiu.com/og-image.jpg" />
+
+  <link rel="stylesheet" href="style.css" />
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #f5f3ef;
-      --ink: #181614;
-      --dim: rgba(24,22,20,0.36);
-      --line: rgba(24,22,20,0.13);
-    }
-
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--ink);
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      cursor: none;
-    }
-
-    /* ── CURSOR ── */
-    #c-dot, #c-ring {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-    }
-    #c-dot { width: 5px; height: 5px; background: var(--ink); }
-    #c-ring {
-      width: 30px; height: 30px;
-      border: 1px solid rgba(24,22,20,0.38);
-      transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
-    }
-
     /* PAGE LAYOUT */
     .page {
       min-height: 100vh;
@@ -74,14 +56,14 @@
       display: inline-block;
       opacity: 0;
       transform: translateY(10px);
-      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 0.9s forwards;
+      animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
     }
 
     .wm-piu {
       display: inline-block;
       opacity: 0;
       transform: translateY(10px);
-      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) 1.75s forwards;
+      animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
     }
 
     .tagline {
@@ -92,71 +74,41 @@
       color: var(--dim);
       opacity: 0;
       transform: translateY(8px);
-      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 2.4s forwards;
+      animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) 0.6s forwards;
     }
 
     .disciplines {
       margin-top: clamp(2.5rem, 5vw, 4rem);
       opacity: 0;
       transform: translateY(8px);
-      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 3.0s forwards;
-    }
-
-    .discipline-label {
-      font-family: 'Didact Gothic', sans-serif;
-      font-size: clamp(0.52rem, 0.82vw, 0.6rem);
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: 0.65rem;
+      animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) 0s forwards;
     }
 
     .discipline-track {
-      position: relative;
-      height: clamp(1.6rem, 3vw, 2.4rem);
-      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1em;
     }
 
-    .discipline-track span {
-      position: absolute;
-      inset: 0;
+    .discipline-item {
       font-family: 'Jost', sans-serif;
       font-weight: 100;
       font-size: clamp(1.1rem, 2.6vw, 2rem);
       letter-spacing: 0.01em;
-      display: flex;
-      align-items: center;
       color: var(--ink);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
+      text-decoration: none;
+      opacity: 0.2;
+      transition: opacity 0.5s ease;
     }
-    .discipline-track span { pointer-events: none; }
-    .discipline-track span.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    .discipline-track span.exit   { opacity: 0; transform: translateY(-10px); }
-    .discipline-track a { color: inherit; text-decoration: none; }
-    .discipline-track a:hover { opacity: 0.5; transition: opacity 0.2s; }
+    .discipline-item.is-active { opacity: 1; }
+    .discipline-item:hover     { opacity: 0.65; }
 
-    /* ── FOOTER ── */
+    /* Footer animation (page-specific timing) */
     footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 1rem;
-      padding-top: 1.8rem;
-      border-top: 1px solid var(--line);
-      font-family: 'Didact Gothic', sans-serif;
-      font-size: clamp(0.55rem, 0.92vw, 0.65rem);
-      letter-spacing: 0.1em;
-      color: var(--dim);
       opacity: 0;
       transform: translateY(8px);
-      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 3.6s forwards;
+      animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) 1.4s forwards;
     }
-    footer a { color: inherit; text-decoration: none; transition: color 0.2s; }
-    footer a:hover { color: var(--ink); }
-
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
     /* ── ACCENT MARK on "ù" in Più ── */
     .wm-accent-wrap {
@@ -175,7 +127,7 @@
       display: inline-block;
       transform-origin: center bottom;
       opacity: 0;
-      animation: accentFadeIn 0.35s ease-out 2.15s forwards;
+      animation: accentFadeIn 0.3s ease-out 0.5s forwards;
     }
     .wm-accent-mark.shake {
       animation: accentShake 0.6s ease-in-out;
@@ -192,9 +144,7 @@
 
     /* ── MOBILE ── */
     @media (max-width: 680px) {
-      html, body { cursor: auto; }
-      #c-dot, #c-ring { display: none; }
-      footer { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+      .footer-social { gap: 0.8em; }
     }
   </style>
 </head>
@@ -211,93 +161,71 @@
     <p class="tagline">An integrated architecture and art studio.</p>
 
     <div class="disciplines">
-      <div class="discipline-track" aria-live="polite">
-        <span>architecture</span>
-        <span><a href="interior-design.html">interior design</a></span>
-        <span>product design</span>
-        <span>art</span>
-      </div>
+      <nav class="discipline-track" aria-label="Disciplines">
+        <a href="architecture.html"    class="discipline-item">architecture</a>
+        <a href="interior-design.html" class="discipline-item">interior design</a>
+        <a href="product-design.html"  class="discipline-item">product design</a>
+        <a href="art.html"             class="discipline-item">art</a>
+      </nav>
     </div>
   </main>
 
   <footer>
     <span>www.studiodipiu.com</span>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/studiodipiu" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+      <a href="https://www.linkedin.com/company/studiodipiu" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+    </div>
     <a href="mailto:info@studiodipiu.com">info@studiodipiu.com</a>
   </footer>
 </div>
 
 
+<script src="main.js"></script>
 <script>
-  /* ── Discipline rotator + accent shake (synchronized) ── */
+  /* ── Discipline focus rotator + accent shake ── */
   (function () {
-    const items  = document.querySelectorAll('.discipline-track span');
+    const items  = document.querySelectorAll('.discipline-item');
     const accent = document.querySelector('.wm-accent-mark');
     let current  = 0;
+    let paused   = false;
 
-    /* Lock opacity after fade-in so the shake class can override animation safely */
-    setTimeout(() => { if (accent) accent.style.opacity = '1'; }, 2600);
+    /* Lock opacity after fade-in so shake can override cleanly */
+    setTimeout(() => { if (accent) accent.style.opacity = '1'; }, 900);
 
     function shake() {
       if (!accent) return;
       accent.classList.remove('shake');
-      void accent.offsetWidth; /* force reflow to restart */
+      void accent.offsetWidth;
       accent.classList.add('shake');
     }
 
     function activate(i) {
-      items.forEach((el, j) => {
-        el.classList.remove('active', 'exit');
-        if (j === i) el.classList.add('active');
-        else if (j === (i - 1 + items.length) % items.length) el.classList.add('exit');
-      });
+      items.forEach((el, j) => el.classList.toggle('is-active', j === i));
     }
+
+    /* Hover: user takes control */
+    items.forEach((el, i) => {
+      el.addEventListener('mouseenter', () => {
+        paused = true;
+        activate(i);
+      });
+      el.addEventListener('mouseleave', () => {
+        paused = false;
+        current = i; /* resume rotation from this item */
+      });
+    });
 
     setTimeout(() => {
       activate(0);
       setInterval(() => {
+        if (paused) return;
         current = (current + 1) % items.length;
         activate(current);
         shake();
       }, 2800);
-    }, 3800);
+    }, 1800);
   })();
-
-  /* ── Custom cursor ── */
-  (function () {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-    const dot  = document.getElementById('c-dot');
-    const ring = document.getElementById('c-ring');
-    let mx = -200, my = -200, rx = -200, ry = -200;
-
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.left = mx + 'px';
-      dot.style.top  = my + 'px';
-    });
-
-    (function loop() {
-      rx += (mx - rx) * 0.1;
-      ry += (my - ry) * 0.1;
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
-      requestAnimationFrame(loop);
-    })();
-
-    document.querySelectorAll('a').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        ring.style.width  = '46px';
-        ring.style.height = '46px';
-        ring.style.borderColor = 'rgba(24,22,20,0.6)';
-      });
-      el.addEventListener('mouseleave', () => {
-        ring.style.width  = '30px';
-        ring.style.height = '30px';
-        ring.style.borderColor = 'rgba(24,22,20,0.38)';
-      });
-    });
-  })();
-
-
 </script>
 </body>
 </html>

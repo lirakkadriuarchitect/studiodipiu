@@ -3,61 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Interior Design — diPiù studio" />
+  <meta name="description" content="Interior Design projects by diPiù — bars, restaurants and residential spaces in Kosovo." />
   <meta name="theme-color" content="#f5f3ef" />
   <title>Interior Design — diPiù</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Jost:wght@100;200&family=Didact+Gothic&display=swap" rel="stylesheet" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://www.studiodipiu.com/interior-design.html" />
+  <meta property="og:title"       content="Interior Design — diPiù" />
+  <meta property="og:description" content="Interior design projects: Tintin Cocktail Bar, Late Night Bar." />
+  <meta property="og:image"       content="https://www.studiodipiu.com/og-image-interior.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Interior Design — diPiù" />
+  <meta name="twitter:description" content="Interior design projects: Tintin Cocktail Bar, Late Night Bar." />
+  <meta name="twitter:image"       content="https://www.studiodipiu.com/og-image-interior.jpg" />
+
+  <link rel="stylesheet" href="style.css" />
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg:   #f5f3ef;
-      --ink:  #181614;
-      --dim:  rgba(24,22,20,0.36);
-      --line: rgba(24,22,20,0.13);
-    }
-
-    html, body {
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--ink);
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      cursor: none;
-    }
-
-    /* ── CURSOR ── */
-    #c-dot, #c-ring {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-    }
-    #c-dot  { width: 5px; height: 5px; background: var(--ink); }
-    #c-ring {
-      width: 30px; height: 30px;
-      border: 1px solid rgba(24,22,20,0.38);
-      transition: width .25s ease, height .25s ease, border-color .25s ease;
-    }
-
-    #c-hint {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      font-family: 'Didact Gothic', sans-serif;
-      font-size: .52rem;
-      letter-spacing: .14em;
-      color: var(--ink);
-      opacity: 0;
-      transform: translate(14px, -50%);
-      transition: opacity .18s;
-      white-space: nowrap;
-    }
-    #c-hint.show { opacity: 1; }
-
     /* ── PAGE ── */
     .page {
       padding: clamp(2.5rem,6vw,5rem) clamp(2rem,7vw,7rem);
@@ -177,6 +144,7 @@
       letter-spacing: -.02em;
       line-height: 1;
       color: var(--ink);
+      white-space: nowrap;
     }
 
     /* ── DESCRIPTION ── */
@@ -190,8 +158,8 @@
     }
     .desc-meta {
       font-family: 'Didact Gothic', sans-serif;
-      font-size: clamp(.52rem,.82vw,.6rem);
-      letter-spacing: .22em;
+      font-size: clamp(.70rem,1.07vw,.87rem);
+      letter-spacing: .18em;
       text-transform: lowercase;
       color: var(--dim);
       line-height: 2.2;
@@ -211,15 +179,15 @@
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-style: italic;
       font-weight: 300;
-      font-size: clamp(1rem,1.4vw,1.15rem);
-      color: rgba(24,22,20,0.48);
+      font-size: clamp(1.05rem,1.55vw,1.25rem);
+      color: rgba(24,22,20,0.55);
       line-height: 1.9;
       max-width: 520px;
       text-align: right;
     }
 
     /* ── SLIDER ── */
-    .slider { position: relative; width: 66.667%; flex-shrink: 0; margin: 0 auto; }
+    .slider { position: relative; flex: 1; min-width: 0; margin-left: auto; }
 
     .slider-viewport {
       position: relative;
@@ -283,36 +251,20 @@
     }
     .slider-count .cur { color: var(--ink); display: inline-block; transition: opacity .25s; }
 
-    /* ── FOOTER ── */
+    /* Footer animation (page-specific timing) */
     footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 1rem;
-      padding-top: 1.8rem;
-      border-top: 1px solid var(--line);
-      font-family: 'Didact Gothic', sans-serif;
-      font-size: clamp(.55rem,.92vw,.65rem);
-      letter-spacing: .1em;
-      color: var(--dim);
       opacity: 0;
       animation: fadeUp .7s cubic-bezier(.22,1,.36,1) .9s forwards;
     }
-    footer a { color: inherit; text-decoration: none; transition: color .2s; }
-    footer a:hover { color: var(--ink); }
-
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
     /* ── MOBILE ── */
     @media (max-width: 680px) {
-      html, body { cursor: auto; }
-      #c-dot, #c-ring, #c-hint { display: none; }
       .project-row { flex-direction: column; }
-      .slider { width: 100%; margin: 0; }
+      .project-title { white-space: normal; }
+      .slider { flex: none; width: 100%; margin: 0; }
       .slider-viewport { aspect-ratio: 4/3; }
       .project-desc { flex-direction: column; gap: 1.5rem; }
       .desc-note { text-align: left; max-width: 100%; }
-      footer { flex-direction: column; align-items: flex-start; gap: .3rem; }
     }
   </style>
 </head>
@@ -334,7 +286,7 @@
     <div>
       <p class="discipline-label">Selected work</p>
       <h1 class="discipline-title">
-        <span class="word" style="--i:0">Interior</span><br>
+        <span class="word" style="--i:0">Interior</span>
         <span class="word" style="--i:1">Design</span>
       </h1>
     </div>
@@ -347,22 +299,21 @@
         <div class="project-row">
           <div class="project-meta">
             <p class="project-type">Bar &amp; Restaurant</p>
-            <h2 class="project-title">Tintin<br>Cocktail Bar</h2>
+            <h2 class="project-title">Tintin Cocktail Bar</h2>
           </div>
           <div class="slider">
             <div class="slider-viewport">
               <div class="slide is-active"><img src="interior%20design/tintin%20cocktail%20bar/edited/17_FORTESA%20HOME_tintin.jpg" alt="Tintin Cocktail Bar — render" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/1_FORTESA%20HOME_tintin.jpg"  alt="Tintin Cocktail Bar — render" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/5_FORTESA%20HOME_tintin.jpg"  alt="Tintin Cocktail Bar — render" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/9_FORTESA%20HOME_tintin.jpg"  alt="Tintin Cocktail Bar — render" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9561.jpg"                 alt="Tintin Cocktail Bar" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9572.jpg"                 alt="Tintin Cocktail Bar" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9614.jpg"                 alt="Tintin Cocktail Bar" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9631.jpg"                 alt="Tintin Cocktail Bar" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9691.jpg"                 alt="Tintin Cocktail Bar" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9697.jpg"                 alt="Tintin Cocktail Bar" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/IMG_0975.jpg"                 alt="Tintin Cocktail Bar" /></div>
-              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/IMG_1024.jpg"                 alt="Tintin Cocktail Bar" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/1_FORTESA%20HOME_tintin.jpg"  alt="Tintin Cocktail Bar — render" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/5_FORTESA%20HOME_tintin.jpg"  alt="Tintin Cocktail Bar — render" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/9_FORTESA%20HOME_tintin.jpg"  alt="Tintin Cocktail Bar — render" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9561.jpg"                 alt="Tintin Cocktail Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9572.jpg"                 alt="Tintin Cocktail Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9614.jpg"                 alt="Tintin Cocktail Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9631.jpg"                 alt="Tintin Cocktail Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9691.jpg"                 alt="Tintin Cocktail Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/AX2A9697.jpg"                 alt="Tintin Cocktail Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/tintin%20cocktail%20bar/edited/IMG_1024.jpg"                 alt="Tintin Cocktail Bar" loading="lazy" /></div>
             </div>
             <div class="slider-bar"><div class="slider-bar-fill"></div></div>
             <div class="slider-controls">
@@ -370,7 +321,7 @@
                 <button class="s-btn s-prev" aria-label="Previous">← prev</button>
                 <button class="s-btn s-next" aria-label="Next">next →</button>
               </div>
-              <span class="slider-count"><span class="cur">01</span>&thinsp;/&thinsp;<span class="tot">12</span></span>
+              <span class="slider-count" aria-live="polite" aria-atomic="true"><span class="cur">01</span>&thinsp;/&thinsp;<span class="tot">11</span></span>
             </div>
           </div>
         </div>
@@ -378,7 +329,6 @@
         <div class="project-desc">
           <div class="desc-meta">
             <span class="desc-dot"></span>bar &amp; restaurant<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kosovo<br>
             <br>
             plaster · brass<br>
             aged timber<br>
@@ -403,19 +353,19 @@
         <div class="project-row">
           <div class="project-meta">
             <p class="project-type">Bar &amp; Lounge</p>
-            <h2 class="project-title">Late Night<br>Bar</h2>
+            <h2 class="project-title">Late Night Bar</h2>
           </div>
           <div class="slider">
             <div class="slider-viewport">
               <div class="slide is-active"><img src="interior%20design/late%20night%20bar/edited/image.png"                 alt="Late Night Bar" /></div>
-              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/9Me0fysftHI_L4iRXN3_b.png"  alt="Late Night Bar" /></div>
-              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/Iaobqt1WYhTRcnRf12xjk.png"  alt="Late Night Bar" /></div>
-              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/WU17YBtCLCw-FAz5H7jFG.png"  alt="Late Night Bar" /></div>
-              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/aai5R30NczPH-5Q1aBEO4.png"  alt="Late Night Bar" /></div>
-              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/iLHk2mLaWinhTznl29kUw.png"  alt="Late Night Bar" /></div>
-              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/oL1UJ4oz95Jat50aUErzI.png"  alt="Late Night Bar" /></div>
-              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/vUa0RHimI0U-Ls4qZ-5lA.png"  alt="Late Night Bar" /></div>
-              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/image%20%281%29.png"          alt="Late Night Bar" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/9Me0fysftHI_L4iRXN3_b.png"  alt="Late Night Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/Iaobqt1WYhTRcnRf12xjk.png"  alt="Late Night Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/WU17YBtCLCw-FAz5H7jFG.png"  alt="Late Night Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/aai5R30NczPH-5Q1aBEO4.png"  alt="Late Night Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/iLHk2mLaWinhTznl29kUw.png"  alt="Late Night Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/oL1UJ4oz95Jat50aUErzI.png"  alt="Late Night Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/vUa0RHimI0U-Ls4qZ-5lA.png"  alt="Late Night Bar" loading="lazy" /></div>
+              <div class="slide"><img src="interior%20design/late%20night%20bar/edited/image%20%281%29.png"          alt="Late Night Bar" loading="lazy" /></div>
             </div>
             <div class="slider-bar"><div class="slider-bar-fill"></div></div>
             <div class="slider-controls">
@@ -423,7 +373,7 @@
                 <button class="s-btn s-prev" aria-label="Previous">← prev</button>
                 <button class="s-btn s-next" aria-label="Next">next →</button>
               </div>
-              <span class="slider-count"><span class="cur">01</span>&thinsp;/&thinsp;<span class="tot">09</span></span>
+              <span class="slider-count" aria-live="polite" aria-atomic="true"><span class="cur">01</span>&thinsp;/&thinsp;<span class="tot">09</span></span>
             </div>
           </div>
         </div>
@@ -431,7 +381,6 @@
         <div class="project-desc">
           <div class="desc-meta">
             <span class="desc-dot"></span>bar &amp; lounge<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kosovo<br>
             <br>
             concrete · steel<br>
             smoked glass<br>
@@ -455,11 +404,16 @@
 
   <footer>
     <span>www.studiodipiu.com</span>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/studiodipiu" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+      <a href="https://www.linkedin.com/company/studiodipiu" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+    </div>
     <a href="mailto:info@studiodipiu.com">info@studiodipiu.com</a>
   </footer>
 
 </div>
 
+<script src="main.js"></script>
 <script>
 /* ── Slider factory ── */
 function makeSlider(sliderEl) {
@@ -560,61 +514,6 @@ const revealObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 
 document.querySelectorAll('.project-scroll').forEach(el => revealObserver.observe(el));
-
-/* ── Custom cursor ── */
-(function () {
-  if (window.matchMedia('(pointer: coarse)').matches) return;
-
-  const dot  = document.getElementById('c-dot');
-  const ring = document.getElementById('c-ring');
-  const hint = document.getElementById('c-hint');
-  let mx = -200, my = -200, rx = -200, ry = -200;
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    dot.style.left  = mx + 'px';
-    dot.style.top   = my + 'px';
-    hint.style.left = mx + 'px';
-    hint.style.top  = my + 'px';
-  });
-
-  (function loop() {
-    rx += (mx - rx) * 0.1;
-    ry += (my - ry) * 0.1;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    requestAnimationFrame(loop);
-  })();
-
-  document.querySelectorAll('.slider-viewport').forEach(vp => {
-    vp.addEventListener('mousemove', e => {
-      hint.textContent = e.offsetX < vp.getBoundingClientRect().width / 2 ? '←' : '→';
-      hint.classList.add('show');
-      ring.style.width       = '44px';
-      ring.style.height      = '44px';
-      ring.style.borderColor = 'rgba(24,22,20,0.5)';
-    });
-    vp.addEventListener('mouseleave', () => {
-      hint.classList.remove('show');
-      ring.style.width       = '30px';
-      ring.style.height      = '30px';
-      ring.style.borderColor = 'rgba(24,22,20,0.38)';
-    });
-  });
-
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      ring.style.width       = '46px';
-      ring.style.height      = '46px';
-      ring.style.borderColor = 'rgba(24,22,20,0.6)';
-    });
-    el.addEventListener('mouseleave', () => {
-      ring.style.width       = '30px';
-      ring.style.height      = '30px';
-      ring.style.borderColor = 'rgba(24,22,20,0.38)';
-    });
-  });
-})();
 </script>
 </body>
 </html>
